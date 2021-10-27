@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, useSubscription, gql, useMutation } from '@apollo/client';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { Container, Grid, Typography, Box, TextField, Button } from '@mui/material';
@@ -22,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
 		width: '100% !important',
 		paddingTop: 25,
 		margin: '0 !important',
-		// height: 'calc(100vh - 100px)',
-		// display: 'flex',
-		// flexDirection: 'column-reverse',
 	},
 	message: {
 		display: 'flex',
@@ -104,13 +101,24 @@ const POST_MESSAGE = gql`
 	}
 `;
 
+const AutoScroll = () => {
+	const messageRef = useRef();
+
+	useEffect(() => {
+		messageRef.current.scrollIntoView();
+	});
+
+	return <div ref={messageRef} />;
+};
+
 const Messages = (props, { user }) => {
 	const classes = useStyles();
 	const { data, loading } = useSubscription(GET_MESSAGES_SUB);
+	const messagesRef = useRef(null);
 
 	return (
 		<Container className={classes.messagesContainer}>
-			<Grid container spacing={3} className={classes.messagesWrapper}>
+			<Grid container spacing={3} className={classes.messagesWrapper} ref={messagesRef}>
 				{!loading &&
 					data.messages.map(({ id, user: messageUser, content }) => {
 						if (props.username === messageUser) {
@@ -134,6 +142,7 @@ const Messages = (props, { user }) => {
 							);
 						}
 					})}
+				<AutoScroll />
 			</Grid>
 		</Container>
 	);
@@ -145,9 +154,10 @@ const NewMessage = (props) => {
 	const classes = useStyles();
 
 	const sendMessage = () => {
-		if (newMessageText.length > 0) {
-			postMessage({ variables: { user: props.username, content: newMessageText } });
-		}
+		if (props.username.length <= 0) alert('Message not sent. Please make sure to enter a username before sending a message!');
+		if (newMessageText.length <= 0) return false;
+
+		postMessage({ variables: { user: props.username, content: newMessageText } });
 
 		setNewMessageText('');
 	};
