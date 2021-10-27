@@ -4,10 +4,27 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 import { Container, Grid, Typography, Box, TextField, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+	mainContainer: {
+		backgroundColor: '#eee',
+		minHeight: '100vh',
+		height: '100%',
+	},
+	messagesContainer: {
+		overflowY: 'scroll',
+		height: 'calc(100vh - 100px)',
+		[theme.breakpoints.down('md')]: {
+			height: 'calc(100vh - 150px)',
+		},
+	},
 	messagesWrapper: {
 		flexDirection: 'column !important',
-		paddingTop: 50,
+		width: '100% !important',
+		paddingTop: 25,
+		margin: '0 !important',
+		// height: 'calc(100vh - 100px)',
+		// display: 'flex',
+		// flexDirection: 'column-reverse',
 	},
 	message: {
 		display: 'flex',
@@ -46,10 +63,17 @@ const useStyles = makeStyles({
 		borderRadius: 10,
 	},
 	newMessageContainer: {
-		marginTop: 50,
 		alignItems: 'center',
+		// position: 'absolute',
+		bottom: 0,
+		backgroundColor: 'rgba(238,238,238,.9)',
 	},
-});
+	sendMessageButton: {
+		paddingTop: '16px !important',
+		paddingBottom: '16px !important',
+		width: '100%',
+	},
+}));
 
 const link = new WebSocketLink({
 	uri: `ws://localhost:4000/`,
@@ -85,35 +109,33 @@ const Messages = (props, { user }) => {
 	const { data, loading } = useSubscription(GET_MESSAGES_SUB);
 
 	return (
-		<>
-			<Container>
-				<Grid container spacing={3} className={classes.messagesWrapper}>
-					{!loading &&
-						data.messages.map(({ id, user: messageUser, content }) => {
-							if (props.username === messageUser) {
-								return (
-									<div key={id} className={(classes.message, classes.myMessageWrapper)}>
-										<Grid item>
-											<Typography className={classes.myMessageText}>{content}</Typography>
-										</Grid>
-									</div>
-								);
-							} else {
-								return (
-									<div key={id} className={(classes.message, classes.otherMessageWrapper)}>
-										<Grid item className={classes.messageUserIcon} mr={1}>
-											{messageUser.slice(0, 2).toUpperCase()}
-										</Grid>
-										<Grid item>
-											<Typography className={classes.otherMessageText}>{content}</Typography>
-										</Grid>
-									</div>
-								);
-							}
-						})}
-				</Grid>
-			</Container>
-		</>
+		<Container className={classes.messagesContainer}>
+			<Grid container spacing={3} className={classes.messagesWrapper}>
+				{!loading &&
+					data.messages.map(({ id, user: messageUser, content }) => {
+						if (props.username === messageUser) {
+							return (
+								<div key={id} className={(classes.message, classes.myMessageWrapper)}>
+									<Grid item>
+										<Typography className={classes.myMessageText}>{content}</Typography>
+									</Grid>
+								</div>
+							);
+						} else {
+							return (
+								<div key={id} className={(classes.message, classes.otherMessageWrapper)}>
+									<Grid item className={classes.messageUserIcon} mr={1}>
+										{messageUser.slice(0, 2).toUpperCase()}
+									</Grid>
+									<Grid item>
+										<Typography className={classes.otherMessageText}>{content}</Typography>
+									</Grid>
+								</div>
+							);
+						}
+					})}
+			</Grid>
+		</Container>
 	);
 };
 
@@ -123,7 +145,6 @@ const NewMessage = (props) => {
 	const classes = useStyles();
 
 	const sendMessage = () => {
-		console.log(props.username);
 		if (newMessageText.length > 0) {
 			postMessage({ variables: { user: props.username, content: newMessageText } });
 		}
@@ -138,12 +159,12 @@ const NewMessage = (props) => {
 	return (
 		<Container>
 			<Grid container className={classes.newMessageContainer}>
-				<Grid item xs={3}>
+				<Grid item xs={5} md={3} flexGrow={1}>
 					<Box>
 						<TextField label='Your Name' value={props.username} onChange={(e) => props.changeUsername(e)} />
 					</Box>
 				</Grid>
-				<Grid item xs={8}>
+				<Grid item xs={9} md={7}>
 					<Box>
 						<TextField
 							fullWidth
@@ -156,9 +177,9 @@ const NewMessage = (props) => {
 						/>
 					</Box>
 				</Grid>
-				<Grid item xs={1}>
+				<Grid item xs={3} md={2}>
 					<Box sx={{ m: 2 }}>
-						<Button variant='contained' onClick={() => sendMessage()}>
+						<Button variant='contained' className={classes.sendMessageButton} onClick={() => sendMessage()}>
 							Send
 						</Button>
 					</Box>
@@ -169,6 +190,7 @@ const NewMessage = (props) => {
 };
 
 const Chat = () => {
+	const classes = useStyles();
 	const [username, setUsername] = useState('');
 
 	const handleUsernameChange = (e) => {
@@ -177,10 +199,8 @@ const Chat = () => {
 
 	return (
 		<ApolloProvider client={client}>
-			<div>
+			<div className={classes.mainContainer}>
 				<Messages username={username} />
-			</div>
-			<div>
 				<NewMessage username={username} changeUsername={handleUsernameChange} />
 			</div>
 		</ApolloProvider>
