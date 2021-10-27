@@ -1,9 +1,15 @@
 # Chat With Me
 
-## Description
-This is a **_very_** simple chat app that allows 2 or more people to communicate with each other by typing in their name and then a message.
+## Contents
+- [Description]()
 
-## How to use
+## Description
+This is a **_very_** simple chat app that allows 2 or more people to communicate with each other by typing in their name and then a message. Check the
+
+## How to use with Docker
+
+
+## How to use without Docker
 
 1. Download repository
 
