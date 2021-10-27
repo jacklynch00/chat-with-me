@@ -123,7 +123,6 @@ const NewMessage = (props) => {
 	const classes = useStyles();
 
 	const sendMessage = () => {
-		console.log(props.username);
 		if (newMessageText.length > 0) {
 			postMessage({ variables: { user: props.username, content: newMessageText } });
 		}
