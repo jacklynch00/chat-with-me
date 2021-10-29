@@ -154,16 +154,10 @@ const NewMessage = (props) => {
 	const classes = useStyles();
 
 	const sendMessage = () => {
-<<<<<<< HEAD:frontend/src/Chat.jsx
-		if (newMessageText.length > 0) {
-			postMessage({ variables: { user: props.username, content: newMessageText } });
-		}
-=======
 		if (props.username.length <= 0) alert('Message not sent. Please make sure to enter a username before sending a message!');
 		if (newMessageText.length <= 0) return false;
 
 		postMessage({ variables: { user: props.username, content: newMessageText } });
->>>>>>> main:frontend/src/chat/Chat.jsx
 
 		setNewMessageText('');
 	};
