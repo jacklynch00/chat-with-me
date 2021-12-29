@@ -11,6 +11,7 @@ This is a **_very_** simple chat app that allows 2 or more people to communicate
 - In the root directory, run `docker-compose up -d --build`
     - This will create the images and containers and then run them in detached mode
 - You can now access the frontend on `https://localhost:3000`
+- Run `docker-compose down` to turn of the server and frontend
 
 ## How to use without Docker
 
