@@ -2,6 +2,8 @@
 
 ## Contents
 - [Description](#description)
+- [Using With Docker](#how-to-use-with-docker)
+- [Using Without Docker](#how-to-use-without-docker)
 
 ## Description
 This is a **_very_** simple chat app that allows 2 or more people to communicate with each other by typing in their name and then a message. Check the
