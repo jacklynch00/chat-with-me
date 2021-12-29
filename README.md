@@ -7,7 +7,10 @@
 This is a **_very_** simple chat app that allows 2 or more people to communicate with each other by typing in their name and then a message. Check the
 
 ## How to use with Docker
-- This is a work in progress
+   > This is under the assumption that you have installed Docker already (Go [Here](https://docs.docker.com/get-docker/) for help)
+- In the root directory, run `docker-compose up -d --build`
+    - This will create the images and containers and then run them in detached mode
+- You can now access the frontend on `https://localhost:3000`
 
 ## How to use without Docker
 
