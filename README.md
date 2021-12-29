@@ -1,7 +1,7 @@
 # Chat With Me
 
 ## Contents
-- [Description]()
+- [Description](#description)
 
 ## Description
 This is a **_very_** simple chat app that allows 2 or more people to communicate with each other by typing in their name and then a message. Check the
