@@ -22,8 +22,8 @@ This is a **_very_** simple chat app that allows 2 or more people to communicate
     then
     ```yarn start``` or ```npm start```
 
-3. Install client dependencies and start the frontend
-  - Enter the client directory: ```cd chat-with-me/client```
+3. Install frontend dependencies and start the frontend
+  - Enter the frontend directory: ```cd chat-with-me/frontend```
 
     ```yarn install``` or ```npm install```
     then
